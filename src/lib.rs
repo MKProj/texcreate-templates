@@ -1,7 +1,7 @@
 use serde::{Deserialize, Serialize};
-use texcore::{ElementList, Any, Metadata, Element, Tex};
+use texcore::{ElementList, Any, Metadata, Element, Tex, compile};
 use serde_json::to_string_pretty as json_string;
-use std::cell::RefCell;
+use std::{cell::RefCell, path::PathBuf, fs::File, io::Write};
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Template{
@@ -25,6 +25,11 @@ impl Template{
     }
     pub fn push_element(&self, element: Element<Any>){
         self.element_list.borrow_mut().push(element)
+    }
+    pub fn push_elements(&self, elements: Vec<Element<Any>>){
+        for e in elements{
+            self.push_element(e)
+        }
     }
     pub fn set_list(&self, list: ElementList<Any>){
         *self.element_list.borrow_mut() = list;
@@ -53,6 +58,19 @@ impl Template{
         html.push(self.to_latex_string());
         html.push("</code>".to_owned());
         html.join("\n")
+    }
+    pub fn write_texfiles(&self, main_path: PathBuf, incl_path: PathBuf) -> Result<(), std::io::Error>{
+        let mut file = File::create(main_path)?;
+        let mut incl_file = File::create(incl_path)?;
+        let (main, incl) = self.element_list.borrow().clone().to_latex_split_string();
+        file.write_all(main.as_bytes())?;
+        incl_file.write_all(incl.as_bytes())?;
+        Ok(())
+    }
+    pub fn write_then_compile(&self, main_path: PathBuf, incl_path: PathBuf, output_path: PathBuf) -> Result<(), std::io::Error>{
+        self.write_texfiles(main_path.clone(), incl_path)?;
+        compile(main_path, output_path)?;
+        Ok(())
     }
 }
 
