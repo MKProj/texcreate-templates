@@ -1,0 +1,16 @@
+[package]
+name = "texcreate-templates"
+version = "0.1.0"
+edition = "2021"
+description = "A library to create templates for the texcreate project" 
+license = "MIT" 
+repository = "https://github.com/Mustafif/texcreate-templates" 
+author = "Mustafif Khan"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0.144", features = ["derive"] }
+serde_json = "1.0.85"
+texcore = "0.2.3"
+toml = "0.5.9"
