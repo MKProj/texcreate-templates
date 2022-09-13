@@ -1,6 +1,7 @@
 use serde::{Deserialize, Serialize};
 use texcore::{ElementList, Any, Metadata, Element, Tex, compile};
 use serde_json::to_string_pretty as json_string;
+use serde_json::from_str;
 use std::{cell::RefCell, path::PathBuf, fs::File, io::Write};
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
@@ -22,6 +23,13 @@ impl Template{
             description: desc.to_owned(), 
             element_list: RefCell::new(ElementList::default())
         }
+    }
+    pub fn from_file(path: PathBuf) -> Self{
+        let content = std::fs::read_to_string(path).unwrap();
+        from_str(&content).unwrap()
+    }
+    pub fn name(&self) -> String{
+        self.name.clone()
     }
     pub fn push_element(&self, element: Element<Any>){
         self.element_list.borrow_mut().push(element)
