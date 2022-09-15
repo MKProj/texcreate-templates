@@ -28,6 +28,14 @@ impl Template{
         let content = std::fs::read_to_string(path).unwrap();
         from_str(&content).unwrap()
     }
+    pub fn from_string(content: &str) -> Self{
+        from_str(content).unwrap()
+    }
+    pub fn to_backup(&self) -> (String, String){
+        let json = self.to_json();
+        let name = self.name.clone();
+        (name, json)
+    }
     pub fn name(&self) -> String{
         self.name.clone()
     }
