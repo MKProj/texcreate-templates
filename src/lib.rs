@@ -52,11 +52,11 @@ impl Template{
     }
     pub fn set_metadata(&self, metadata: Metadata){
         let list = ElementList::new(
-            metadata.author.clone(), 
-            metadata.date.clone(), 
-            metadata.title.clone(), 
+            &metadata.author, 
+            &metadata.date, 
+            &metadata.title, 
             metadata.fontsize, 
-            metadata.doc_class.clone(), 
+            &metadata.doc_class, 
             metadata.maketitle
         );
         self.set_list(list)
