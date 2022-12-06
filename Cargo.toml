@@ -1,6 +1,6 @@
 [package]
 name = "texcreate-templates"
-version = "0.1.5"
+version = "0.1.6"
 edition = "2021"
 description = "A library to create templates for the texcreate project" 
 license = "MIT" 
